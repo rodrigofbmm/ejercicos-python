@@ -1,10 +1,53 @@
-Sample Module Repository
-========================
+🎯 Objetivo del proyecto
 
-This simple project is an example repo for Python projects.
+Este repositorio tiene el propósito de servir como banco de ejercicios en Python para:
 
-`Learn more <http://www.kennethreitz.org/essays/repository-structure-and-python>`_.
+Practicar conceptos de programación (estructuras de control, recursión, funciones, clases, etc.).
 
----------------
+Desarrollar lógica y resolución de problemas.
 
-If you want to learn more about ``setup.py`` files, check out `this repository <https://github.com/kennethreitz/setup.py>`_.
+Tener ejemplos con tests para verificar la correcta implementación.
+
+🛠️ Cómo usar este repositorio
+Requisitos
+
+Python 3.x
+
+(Opcional) un entorno virtual (venv o virtualenv)
+
+Las dependencias en requirements.txt (si las hay)
+
+Instalación
+
+Clona el repositorio:
+
+git clone https://github.com/rodrigofbmm/ejercicos-python.git
+cd ejercicos-python
+
+
+(Opcional) crea y activa un entorno virtual:
+
+python3 -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+
+
+Instala las dependencias:
+
+pip install -r requirements.txt
+
+
+(Opcional) instala el paquete localmente:
+
+pip install -e .
+
+🚀 Uso
+
+Explora los directorios juego/, sample/, etc., donde encontrarás los ejercicios o ejemplos.
+
+En tests/ están las pruebas que validan las soluciones. Puedes ejecutarlas con:
+
+pytest
+
+
+o con el comando que prefieras (si usas unittest, nose, etc.).
