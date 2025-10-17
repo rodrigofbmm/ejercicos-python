@@ -1,29 +1,41 @@
 import random
+import threading
 
-def jugar(jugador):
-    numero_secreto = random.randint(1, 10)
-    vidas = 3
-    print(f"\n¡Bienvenido, {jugador.nombre}! Adivina el número entre 1 y 10.")
-    print(f"Tienes {vidas} vidas.\n")
+def jugar(jugador, dificultad):
+    config = {"facil": (5, 10), "dificil": (2, 5)}
+    vidas, tiempo = config[dificultad]
+    secreto = random.randint(1, 10)
+    print(f"\n{jugador.nombre}, adivina un número entre 1 y 10. Vidas: {vidas}")
 
     while vidas > 0:
-        try:
-            intento = int(input("Adivina el número: "))
-            if intento < 1 or intento > 10:
-                print("Debes elegir un número entre 1 y 10.")
-                continue
-            if intento == numero_secreto:
-                print("¡Correcto! Adivinaste el número.")
-                jugador.actualizar_estadisticas(True)
-                return
-            else:
-                print("Prueba otro número.")
-                vidas -= 1
-                if vidas > 0:
-                    print(f"Te quedan {vidas} vidas.\n")
-                else:
-                    print(f"Adiós. El número era {numero_secreto}.")
-                    jugador.actualizar_estadisticas(False)
-                    return
-        except ValueError:
-            print("Introduce un número válido.\n")
+        intento = [None]
+        agotado = [False]
+
+        def leer():
+            try:
+                intento[0] = int(input(f"Adivina ({tiempo}s): "))
+            except:
+                intento[0] = -1
+
+        t = threading.Timer(tiempo, lambda: agotado.__setitem__(0, True))
+        t.start()
+        hilo = threading.Thread(target=leer)
+        hilo.start()
+        hilo.join(timeout=tiempo)
+        t.cancel()
+
+        if agotado[0]:
+            print("¡Tiempo agotado!")
+        elif intento[0] == secreto:
+            print("¡Correcto!")
+            jugador.actualizar_estadisticas(True, dificultad)
+            return
+        elif intento[0] not in range(1, 11):
+            print("Número entre 1 y 10.")
+        else:
+            print("Incorrecto.")
+
+        vidas -= 1
+        print(f"Vidas restantes: {vidas}" if vidas > 0 else f"Fin. Número era {secreto}")
+        if vidas == 0:
+            jugador.actualizar_estadisticas(False, dificultad)

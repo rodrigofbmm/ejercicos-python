@@ -1,37 +1,36 @@
-from persona import crear_persona, Persona
+from persona import crear_persona, seleccionar_jugador
 from juego import jugar
 
 def menu():
-    jugador = None
+    jugadores = []
     while True:
-        print("\n--- MENÚ PRINCIPAL ---")
-        print("1. Crear una persona")
-        print("2. Jugar al juego de adivinar el número")
-        print("3. Ver estadísticas")
-        print("4. Eliminar persona")
+        print("\n1. Crear jugador")
+        print("2. Jugar")
+        print("3. Estadísticas jugador ")
+        print("4. Eliminar jugador")
         print("5. Salir")
-        opcion = input("Elige una opción: ")
+        opcion = input("Opción: ")
 
         if opcion == "1":
-            jugador = crear_persona()
+            jugadores.append(crear_persona())
         elif opcion == "2":
-            if jugador:
-                jugar(jugador)
-            else:
-                print("Primero debes crear una persona.")
+            j = seleccionar_jugador(jugadores)
+            if j:
+                dif = "facil" if input("1. Fácil 2. Difícil: ") == "1" else "dificil"
+                jugar(j, dif)
         elif opcion == "3":
-            if jugador:
-                jugador.mostrar_info()
-            else:
-                print("Primero debes crear una persona.")
+            j = seleccionar_jugador(jugadores, "Ver estadísticas de: ")
+            if j: j.mostrar_info()
         elif opcion == "4":
-
-            print("No hay ninguna persona creada para eliminar.")
+            j = seleccionar_jugador(jugadores, "Eliminar jugador: ")
+            if j:
+                jugadores.remove(j)
+                print(f"{j.nombre} eliminado")
         elif opcion == "5":
             print("¡Hasta luego!")
             break
         else:
-            print("Opción no válida, intenta de nuevo.")
+            print("Opción inválida.")
 
 if __name__ == "__main__":
     menu()
